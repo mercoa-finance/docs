@@ -1,24 +1,24 @@
 {
-  "name": "Starter Kit",
+  "name": "Mercoa",
   "logo": {
-    "dark": "/logo/dark.png",
-    "light": "/logo/light.png"
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
   },
   "favicon": "/favicon.png",
   "colors": {
-    "primary": "#0069ED",
-    "light": "#4D9CFF",
-    "dark": "#0050B4"
+    "primary": "#4F46E5",
+    "light": "#6366F1",
+    "dark": "#1108A8"
   },
   "topbarLinks": [
     {
-      "name": "Documentation",
-      "url": "https://mintlify.com/docs"
+      "name": "Sign in",
+      "url": "https://mercoa.com/dashboard"
     }
   ],
   "topbarCtaButton": {
-    "name": "Get Started",
-    "url": "https://github.com/mintlify/starter"
+    "name": "Book a demo",
+    "url": "https://calendly.com/sai-mercoa/intro"
   },
   "anchors": [
     {
