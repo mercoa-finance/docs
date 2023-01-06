@@ -16,6 +16,10 @@
       "url": "https://mercoa.com/dashboard"
     }
   ],
+  "topbarCtaButton": {
+    "name": "Book a demo",
+    "url": "https://calendly.com/sai-mercoa/intro"
+  },
   "anchors": [
     {
       "name": "API Reference",
