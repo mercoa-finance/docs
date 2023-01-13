@@ -31,7 +31,9 @@
     {
       "group": "Home",
       "pages": [
-        "quick-start"
+        "quick-start",
+        "entities",
+        "business-representatives"
       ]
     }
   ],
