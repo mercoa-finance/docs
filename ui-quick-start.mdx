@@ -1,5 +1,5 @@
 ---
-title: "Quick Start - Frontend"
+title: "Quick Start - Front End"
 description: "Get started with Mercoa with a pre-built UI"
 ---
 
@@ -7,18 +7,18 @@ description: "Get started with Mercoa with a pre-built UI"
 
 ## How it Works
 
-Mercoa provides a drop-in iframe or React Component that is embedded into your frontend.
-An auth token is generated from your backend, and passed to the Mercoa component to authenticate your user.
+Mercoa provides a drop-in iframe or React Component that is embedded into your front end.
+An auth token is generated from your back-end, and passed to the Mercoa component to authenticate your user.
 
 ![Auth Flow](/images/authflow.png)
 
-Once the frontend component is authenticated, your users can start paying invoices and bills!
+Once the front-end component is authenticated, your users can start paying invoices and bills!
 
 ## Getting your API Keys
 
 You can find your API key and Organization ID in the [Mercoa Dashboard](https://mercoa.com/dashboard/developers).
 
-<b>Do NOT expose this key on the frontend</b>, it is for backend use only.
+<b>Do NOT expose this key on the front-end</b>, it is for back-end use only.
 
 ## Create an Entity
 
@@ -41,8 +41,8 @@ You can also pass KYB/KYC data to Mercoa using the API if you already have this 
 
 ## Create an Auth Token for the Entity
 
-Mercoa uses JWT tokens to authenticate users, and you can generate this token with your `organizationId` and API key. 
-Create an endpoint that authenticates the user, generates a JWT with the user's `entityId`, and returns the generated token.
+Mercoa uses JWT tokens to authenticate users. You can generate this token with your `organizationId` and API key. 
+Create an endpoint that authenticates the user, generates a JWT with the user's `entityId`, and return the generated token.
 
 <Tabs>
   <Tab title="node (express)">
@@ -79,7 +79,7 @@ app.get('/generateMercoaToken', async (req, res) => {
 
 Now you have the token, pass it to the Mercoa component to authenticate your user and render the Mercoa AP inbox.
 
-You can use the React component if you need full control over the design and layout, or use the iframe for a simpler intergration.
+You can use the React component if you need full control over the design and layout, or use the iframe for a simpler integration.
 
 <Tabs>
     <Tab title="iframe">
