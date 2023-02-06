@@ -3,12 +3,9 @@ title: "Quick Start - Frontend"
 description: "Get started with Mercoa with a pre-built UI"
 ---
 
-## What is Mercoa
+# Frontend Integration Guide
 
-Mercoa is an embedded Accounts Payable platform designed to drop into your product. 
-Mercoa provides frontend components that can be whitelabled, and a backend API.
-
-## How Mercoa Works
+## How it Works
 
 Mercoa provides a drop-in iframe or React Component that is embedded into your frontend.
 An auth token is generated from your backend, and passed to the Mercoa component to authenticate your user.
@@ -85,7 +82,26 @@ Now you have the token, pass it to the Mercoa component to authenticate your use
 You can use the React component if you need full control over the design and layout, or use the iframe for a simpler intergration.
 
 <Tabs>
-  <Tab title="React">
+    <Tab title="iframe">
+
+  ```javascript
+<script>
+    
+    // Call Your Token Generator Endpoint
+    // Use the same auth scheme you use for all in-app AJAX calls
+    fetch('your-api/generateMercoaToken').then(async resp => {
+      if(resp.status === 200) {
+        const mercoaIframe = document.getElementById('mercoaIframe')
+        mercoaIframe.src = `https://mercoa.com/embedded?token=${await resp.text()}`
+      }
+    })
+
+<script>
+  
+<iframe src='https://mercoa.com/embedded' id='mercoaIframe' style='display:block;width:100%;height:100vh;border:none;' frameborder="0">
+  ```
+  </Tab>
+    <Tab title="React">
 
     <Warning>
      The react library is currently unreleased. Please check back soon!
@@ -140,24 +156,5 @@ You can use the React component if you need full control over the design and lay
 
     ``` */}
     </Tab>
-    <Tab title="iframe">
-
-  ```javascript
-<script>
-    
-    // Call Your Token Generator Endpoint
-    // Use the same auth scheme you use for all in-app AJAX calls
-    fetch('your-api/generateMercoaToken').then(async resp => {
-      if(resp.status === 200) {
-        const mercoaIframe = document.getElementById('mercoaIframe')
-        mercoaIframe.src = `https://mercoa.com/embedded?token=${await resp.text()}`
-      }
-    })
-
-<script>
-  
-<iframe src='https://mercoa.com/embedded' id='mercoaIframe' style='display:block;width:100%;height:100vh;border:none;' frameborder="0">
-  ```
-  </Tab>
 </Tabs>
 
