@@ -24,22 +24,108 @@
     {
       "name": "API Reference",
       "icon": "rectangle-terminal",
-      "url": "https://api.mercoa.com/docs"
+      "url": "api-reference"
     }
   ],
   "navigation": [
     {
       "group": "Home",
       "pages": [
-        "quick-start",
+        "ui-quick-start",
+        "api-quick-start",
         "entities",
         "business-representatives"
       ]
+    },
+    {
+      "group": "API Documentation",
+      "pages": [
+        "api-reference/authentication"
+      ]
+    },
+    {
+      "group": "Entity",
+      "pages": [
+        "api-reference/entity/getAll",
+        "api-reference/entity/get",
+        "api-reference/entity/create",
+        "api-reference/entity/update",
+        "api-reference/entity/delete",
+        "api-reference/entity/invoices",
+        {
+          "group": "Payment Methods",
+          "pages": [
+            "api-reference/payment-method/getAll",
+            "api-reference/payment-method/get",
+            "api-reference/payment-method/create",
+            "api-reference/payment-method/delete",
+            {
+              "group": "Bank Account",
+              "pages": [
+                "api-reference/payment-method/bank-account/initiate-micro-deposit",
+                "api-reference/payment-method/bank-account/verify-micro-deposit"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Representatives",
+          "pages": [
+            "api-reference/representative/getAll",
+            "api-reference/representative/get",
+            "api-reference/representative/create",
+            "api-reference/representative/update",
+            "api-reference/representative/delete"
+          ]
+        },
+        {
+          "group": "Entity Actions",
+          "pages": [
+            "api-reference/entity/accept-tos",
+            "api-reference/entity/token"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Invoice",
+      "pages": [
+        "api-reference/invoice/getAll",
+        "api-reference/invoice/get",
+        "api-reference/invoice/create",
+        "api-reference/invoice/update",
+        "api-reference/invoice/delete",
+        "api-reference/invoice/documents",
+        "api-reference/invoice/vendorLink"
+      ]
+    },
+    {
+      "group": "Bank Lookup",
+      "pages": [
+        "api-reference/bank-lookup/find"
+      ]
+    },
+    {
+      "group": "OCR",
+      "pages": [
+        "api-reference/ocr/ocr"
+      ]
     }
   ],
+  "api": {
+    "baseUrl": "https://api.mercoa.com",
+    "auth": {
+      "method": "bearer"
+    }
+  },
   "footerSocials": {
     "twitter": "https://twitter.com/MercoaFinance",
     "github": "https://github.com/mercoa-finance",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "linkedin": "https://www.linkedin.com/company/mercoa"
+  },
+  "analytics": {
+    "posthog": {
+      "apiKey": "phc_buoa65IknUgowCG9dAhBHtge0qMos8q557sT7yaNOZu"
+    }
   }
 }

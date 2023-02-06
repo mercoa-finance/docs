@@ -1,0 +1,1373 @@
+openapi: 3.1.0
+info:
+  title: api
+  version: ""
+paths:
+  /bankLookup:
+    get:
+      description: Find bank account details
+      operationId: bank-lookupService.find
+      tags:
+        - BankLookup
+      parameters:
+        - name: routingNumber
+          in: query
+          description: Routing number to validate
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankLookupResponse"
+      security: &ref_0
+        - BearerAuth: []
+  /entity/{entityId}/counterparties:
+    get:
+      description: Find counterparties
+      operationId: counterpartyService.find
+      tags:
+        - Counterparty
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: paymentMethods
+          in: query
+          description: include payment method information in response
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CounterpartyResponse"
+      security: *ref_0
+  /entities:
+    get:
+      description: Get all entities
+      operationId: entityService.getAll
+      tags:
+        - Entity
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EntityResponse"
+      security: *ref_0
+  /entity:
+    post:
+      operationId: entityService.create
+      tags:
+        - Entity
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntityResponse"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EntityRequest"
+  /entity/{entityId}:
+    get:
+      description: Get entity
+      operationId: entityService.get
+      tags:
+        - Entity
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntityResponse"
+      security: *ref_0
+    post:
+      description: Update entity
+      operationId: entityService.update
+      tags:
+        - Entity
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntityResponse"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EntityRequest"
+    delete:
+      description: Delete entity
+      operationId: entityService.delete
+      tags:
+        - Entity
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
+  /entity/{entityId}/invoices:
+    get:
+      description: Get invoices for an entity
+      operationId: entityService.getInvoices
+      tags:
+        - Entity
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: status
+          in: query
+          description: Invoice status to filter on
+          required: true
+          schema:
+            $ref: "#/components/schemas/InvoiceStatus"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvoiceResponse"
+      security: *ref_0
+  /entity/{entityId}/accept-tos:
+    post:
+      description: End user accepts Terms of Service
+      operationId: entityService.acceptTermsOfService
+      tags:
+        - Entity
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: string
+      security: *ref_0
+  /entity/{entityId}/token:
+    get:
+      description: Get JWT token for entity
+      operationId: entityService.getToken
+      tags:
+        - Entity
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+          examples:
+            Example1:
+              value: ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                Example1:
+                  value: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzNDU2Nzg5LCJuYW1lIjoiSm9zZXBoIn0.OpOSSw7e485LOP5PrzScxHb7SR6sAOMRckfFwi4rp7o
+      security: *ref_0
+  /invoice:
+    post:
+      description: Create invoice
+      operationId: invoiceService.create
+      tags:
+        - Invoice
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceResponse"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvoiceRequest"
+  /invoice/{invoiceId}:
+    get:
+      description: Get invoice
+      operationId: invoiceService.get
+      tags:
+        - Invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/InvoiceId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceResponse"
+      security: *ref_0
+    post:
+      description: Update invoice
+      operationId: invoiceService.update
+      tags:
+        - Invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/InvoiceId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceResponse"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvoiceRequest"
+    delete:
+      description: >-
+        Delete invoice. Only invoices in the DRAFT and NEW status can be
+        deleted.
+      operationId: invoiceService.delete
+      tags:
+        - Invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/InvoiceId"
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
+  /invoice/{invoiceId}/documents:
+    get:
+      description: Get documents (scanned/uploaded images) associated with this invoice
+      operationId: invoiceService.getDocuments
+      tags:
+        - Invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/InvoiceId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DocumentResponse"
+      security: *ref_0
+  /invoice/{invoiceId}/vendorlink:
+    get:
+      description: Get temporary link for vendor to accept payment
+      operationId: invoiceService.getVendorLink
+      tags:
+        - Invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/InvoiceId"
+          examples:
+            Example1:
+              value: inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                Example1:
+                  value: https://mercoa.com/vendors/accept-payment/?t=123456
+      security: *ref_0
+  /ocr:
+    post:
+      description: Run OCR on an Base64 encoded image or PDF
+      operationId: ocrService.ocr
+      tags:
+        - Ocr
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OCRResponse"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mimeType:
+                  type: string
+                image:
+                  type: string
+              required:
+                - mimeType
+                - image
+  /organization:
+    get:
+      description: Get entity
+      operationId: organizationService.get
+      tags:
+        - Organization
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationRespone"
+      security: *ref_0
+    post:
+      description: Update entity
+      operationId: organizationService.update
+      tags:
+        - Organization
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationRespone"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganizationRequest"
+  /entity/{entityId}/paymentMethods:
+    get:
+      operationId: payment-methodService.getAll
+      tags:
+        - PaymentMethod
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: type
+          in: query
+          description: Type of payment method to filter
+          required: false
+          schema:
+            $ref: "#/components/schemas/PaymentMethodType"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentMethodResponse"
+      security: *ref_0
+  /entity/{entityId}/paymentMethod:
+    post:
+      description: Create payment method
+      operationId: payment-methodService.create
+      tags:
+        - PaymentMethod
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentMethodResponse"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentMethodRequest"
+  /entity/{entityId}/paymentMethod/{paymentMethodId}:
+    get:
+      description: Get payment method
+      operationId: payment-methodService.get
+      tags:
+        - PaymentMethod
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: paymentMethodId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/PaymentMethodId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentMethodResponse"
+      security: *ref_0
+    delete:
+      description: Delete payment method
+      operationId: payment-methodService.delete
+      tags:
+        - PaymentMethod
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: paymentMethodId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/PaymentMethodId"
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
+  /entity/{entityId}/paymentMethod/{paymentMethodId}/micro-deposits:
+    post:
+      description: Initiate micro deposits for a bank account
+      operationId: payment-methodService.initiate-micro-deposits
+      tags:
+        - PaymentMethod
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: paymentMethodId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/PaymentMethodId"
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
+    put:
+      description: Complete micro deposit verification
+      operationId: payment-methodService.completeMicroDeposits
+      tags:
+        - PaymentMethod
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: paymentMethodId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/PaymentMethodId"
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amounts:
+                  type: array
+                  items:
+                    type: integer
+              required:
+                - amounts
+  /entity/{entityId}/representatives:
+    get:
+      description: Get representatives for an entity
+      operationId: representativeService.getAll
+      tags:
+        - Representative
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RepresentativeResponse"
+      security: *ref_0
+  /entity/{entityId}/representative:
+    post:
+      description: Create representative
+      operationId: representativeService.create
+      tags:
+        - Representative
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RepresentativeResponse"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RepresentativeRequest"
+  /entity/{entityId}/representative/{representativeId}:
+    get:
+      description: Get representative
+      operationId: representativeService.get
+      tags:
+        - Representative
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: representativeId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RepresentativeId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RepresentativeResponse"
+      security: *ref_0
+    delete:
+      description: Delete representative
+      operationId: representativeService.delete
+      tags:
+        - Representative
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/EntityId"
+        - name: representativeId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RepresentativeId"
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
+components:
+  schemas:
+    BankLookupResponse:
+      type: object
+      properties:
+        bankName:
+          type: string
+      required:
+        - bankName
+    FullName:
+      type: object
+      properties:
+        firstName:
+          type: string
+        middleName:
+          type: string
+        lastName:
+          type: string
+        suffix:
+          type: string
+      required:
+        - firstName
+        - lastName
+    BirthDate:
+      type: object
+      properties:
+        day:
+          type: string
+        month:
+          type: string
+        year:
+          type: string
+    Address:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        stateOrProvince:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+      required:
+        - addressLine1
+        - city
+        - stateOrProvince
+        - postalCode
+    PhoneNumber:
+      type: object
+      properties:
+        countryCode:
+          type: string
+        number:
+          type: string
+      required:
+        - countryCode
+        - number
+    IndividualGovernmentID:
+      type: object
+      properties:
+        ssn:
+          $ref: "#/components/schemas/SSN"
+        itin:
+          $ref: "#/components/schemas/ITIN"
+    SSN:
+      type: object
+      properties:
+        full:
+          type: string
+        lastFour:
+          type: string
+      required:
+        - lastFour
+    ITIN:
+      type: object
+      properties:
+        full:
+          type: string
+        lastFour:
+          type: string
+      required:
+        - lastFour
+    CounterpartyResponse:
+      type: object
+      properties:
+        paymentMethods:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentMethodResponse"
+      required:
+        - paymentMethods
+      allOf:
+        - $ref: "#/components/schemas/EntityResponse"
+    EntityId:
+      type: string
+    EntityRequest:
+      type: object
+      properties:
+        foreignId:
+          type: string
+        ownedByOrg:
+          type: boolean
+        accountType:
+          $ref: "#/components/schemas/AccountType"
+        profile:
+          $ref: "#/components/schemas/ProfileRequest"
+      required:
+        - accountType
+        - profile
+    EntityResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/EntityId"
+        foreignId:
+          type: string
+        ownedByOrg:
+          type: boolean
+        accountType:
+          $ref: "#/components/schemas/AccountType"
+        name:
+          type: string
+        email:
+          type: string
+        profile:
+          $ref: "#/components/schemas/ProfileResponse"
+        status:
+          $ref: "#/components/schemas/EntityStatus"
+        acceptedTos:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - ownedByOrg
+        - accountType
+        - name
+        - email
+        - profile
+        - status
+        - acceptedTos
+        - createdAt
+        - updatedAt
+    ProfileRequest:
+      type: object
+      properties:
+        business:
+          $ref: "#/components/schemas/BusinessProfileRequest"
+        individual:
+          $ref: "#/components/schemas/IndividualProfileRequest"
+    ProfileResponse:
+      type: object
+      properties:
+        business:
+          $ref: "#/components/schemas/BusinessProfileResponse"
+        individual:
+          $ref: "#/components/schemas/IndividualProfileResponse"
+    BusinessProfileRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        legalBusinessName:
+          type: string
+        businessType:
+          $ref: "#/components/schemas/BusinessType"
+        phone:
+          $ref: "#/components/schemas/PhoneNumber"
+        doingBusinessAs:
+          type: string
+        website:
+          type: string
+        description:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+        ownersProvided:
+          type: boolean
+        taxId:
+          $ref: "#/components/schemas/TaxID"
+      required:
+        - email
+        - legalBusinessName
+        - businessType
+    BusinessProfileResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        legalBusinessName:
+          type: string
+        businessType:
+          $ref: "#/components/schemas/BusinessType"
+        phone:
+          $ref: "#/components/schemas/PhoneNumber"
+        doingBusinessAs:
+          type: string
+        website:
+          type: string
+        description:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+        ownersProvided:
+          type: boolean
+        taxIDProvided:
+          type: boolean
+      required:
+        - email
+        - legalBusinessName
+        - businessType
+        - ownersProvided
+        - taxIDProvided
+    IndividualProfileRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          $ref: "#/components/schemas/FullName"
+        phone:
+          $ref: "#/components/schemas/PhoneNumber"
+        address:
+          $ref: "#/components/schemas/Address"
+        birthDate:
+          $ref: "#/components/schemas/BirthDate"
+        governmentID:
+          $ref: "#/components/schemas/IndividualGovernmentID"
+      required:
+        - email
+        - name
+    IndividualProfileResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          $ref: "#/components/schemas/FullName"
+        phone:
+          $ref: "#/components/schemas/PhoneNumber"
+        address:
+          $ref: "#/components/schemas/Address"
+        birthDateProvided:
+          type: boolean
+        governmentIDProvided:
+          type: boolean
+      required:
+        - email
+        - name
+        - birthDateProvided
+        - governmentIDProvided
+    TaxID:
+      type: object
+      properties:
+        ein:
+          $ref: "#/components/schemas/Ein"
+      required:
+        - ein
+    Ein:
+      type: object
+      properties:
+        number:
+          type: string
+      required:
+        - number
+    BusinessType:
+      type: string
+      enum:
+        - soleProprietorship
+        - unincorporatedAssociation
+        - trust
+        - publicCorporation
+        - privateCorporation
+        - llc
+        - partnership
+        - unincorporatedNonProfit
+        - incorporatedNonProfit
+    AccountType:
+      type: string
+      enum:
+        - business
+        - individual
+    EntityStatus:
+      type: string
+      enum:
+        - unverified
+        - pending
+        - resubmit
+        - review
+        - verified
+        - failed
+    InvoiceRequest:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/InvoiceStatus"
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+        deductionDate:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date-time
+        invoiceNumber:
+          type: string
+        noteToSelf:
+          type: string
+        payerId:
+          $ref: "#/components/schemas/EntityId"
+        paymentSourceId:
+          $ref: "#/components/schemas/PaymentMethodId"
+        vendorId:
+          $ref: "#/components/schemas/EntityId"
+        paymentDestinationId:
+          $ref: "#/components/schemas/PaymentMethodId"
+        uploadedImage:
+          type: string
+      required:
+        - amount
+        - dueDate
+    InvoiceResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/InvoiceId"
+        status:
+          $ref: "#/components/schemas/InvoiceStatus"
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+        deductionDate:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date-time
+        invoiceNumber:
+          type: string
+        noteToSelf:
+          type: string
+        payerId:
+          $ref: "#/components/schemas/EntityId"
+        payer:
+          $ref: "#/components/schemas/EntityResponse"
+        paymentSource:
+          $ref: "#/components/schemas/PaymentMethodResponse"
+        paymentSourceId:
+          $ref: "#/components/schemas/PaymentMethodId"
+        vendorId:
+          $ref: "#/components/schemas/EntityId"
+        vendor:
+          $ref: "#/components/schemas/EntityResponse"
+        paymentDestination:
+          $ref: "#/components/schemas/PaymentMethodResponse"
+        paymentDestinationId:
+          $ref: "#/components/schemas/PaymentMethodId"
+        processedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - status
+        - amount
+        - dueDate
+        - createdAt
+        - updatedAt
+    InvoiceId:
+      type: string
+    DocumentResponse:
+      type: object
+      properties:
+        mimeType:
+          type: string
+        uri:
+          type: string
+      required:
+        - mimeType
+        - uri
+    InvoiceStatus:
+      type: string
+      enum:
+        - DRAFT
+        - NEW
+        - PAID
+        - CANCELED
+        - REFUSED
+        - APPROVED
+        - ARCHIVED
+    OCRResponse:
+      type: object
+      properties:
+        invoice:
+          $ref: "#/components/schemas/InvoiceResponse"
+        vendor:
+          $ref: "#/components/schemas/EntityResponse"
+        check:
+          $ref: "#/components/schemas/CheckResponse"
+      required:
+        - invoice
+        - vendor
+        - check
+    OrganizationId:
+      type: string
+    OrganizationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        logo:
+          type: string
+        websiteUrl:
+          type: string
+        supportEmail:
+          type: string
+      required:
+        - name
+    OrganizationRespone:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/OrganizationId"
+        sandbox:
+          type: boolean
+        name:
+          type: string
+        logoUrl:
+          type: string
+        websiteUrl:
+          type: string
+        supportEmail:
+          type: string
+      required:
+        - id
+        - sandbox
+        - name
+    PaymentMethodId:
+      type: string
+    PaymentMethodRequest:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/PaymentMethodType"
+        bankAccount:
+          $ref: "#/components/schemas/BankAccountRequest"
+        check:
+          $ref: "#/components/schemas/CheckRequest"
+      required:
+        - type
+    PaymentMethodResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/PaymentMethodId"
+        type:
+          $ref: "#/components/schemas/PaymentMethodType"
+        bankAccount:
+          $ref: "#/components/schemas/BankAccountResponse"
+        check:
+          $ref: "#/components/schemas/CheckResponse"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - type
+        - createdAt
+        - updatedAt
+    BankAccountId:
+      type: string
+    BankAccountRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        bankName:
+          type: string
+        routingNumber:
+          type: string
+        accountNumber:
+          type: string
+        accountType:
+          $ref: "#/components/schemas/BankType"
+      required:
+        - bankName
+        - routingNumber
+        - accountNumber
+        - accountType
+    BankAccountResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/BankAccountId"
+        bankName:
+          type: string
+        routingNumber:
+          type: string
+        accountNumber:
+          type: string
+        accountType:
+          $ref: "#/components/schemas/BankType"
+        status:
+          $ref: "#/components/schemas/BankStatus"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - bankName
+        - routingNumber
+        - accountNumber
+        - accountType
+        - status
+        - createdAt
+        - updatedAt
+    CheckId:
+      type: string
+    CheckRequest:
+      type: object
+      properties:
+        payToTheOrderOf:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        stateOrProvince:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+      required:
+        - payToTheOrderOf
+        - addressLine1
+        - city
+        - stateOrProvince
+        - postalCode
+        - country
+    CheckResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/CheckId"
+        payToTheOrderOf:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        stateOrProvince:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - payToTheOrderOf
+        - addressLine1
+        - city
+        - stateOrProvince
+        - postalCode
+        - country
+        - createdAt
+        - updatedAt
+    PaymentMethodType:
+      type: string
+      enum:
+        - check
+        - bankAccount
+    BankType:
+      type: string
+      enum:
+        - CHECKING
+        - SAVINGS
+        - UNKNOWN
+    BankStatus:
+      type: string
+      enum:
+        - NEW
+        - VERIFIED
+        - VERIFICATION_FAILED
+        - PENDING
+        - ERRORED
+    RepresentativeId:
+      type: string
+    RepresentativeRequest:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/FullName"
+        phone:
+          $ref: "#/components/schemas/PhoneNumber"
+        email:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+        birthDate:
+          $ref: "#/components/schemas/BirthDate"
+        governmentID:
+          $ref: "#/components/schemas/IndividualGovernmentID"
+        responsibilities:
+          $ref: "#/components/schemas/Responsibilities"
+      required:
+        - name
+        - phone
+        - email
+        - address
+        - birthDate
+        - governmentID
+        - responsibilities
+    RepresentativeResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/RepresentativeId"
+        name:
+          $ref: "#/components/schemas/FullName"
+        phone:
+          $ref: "#/components/schemas/PhoneNumber"
+        email:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+        birthDateProvided:
+          type: boolean
+        governmentIDProvided:
+          type: boolean
+        responsibilities:
+          $ref: "#/components/schemas/Responsibilities"
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+        disabledOn:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - phone
+        - email
+        - address
+        - birthDateProvided
+        - governmentIDProvided
+        - responsibilities
+        - createdOn
+        - updatedOn
+    Responsibilities:
+      type: object
+      properties:
+        jobTitle:
+          type: string
+        isController:
+          type: boolean
+        isOwner:
+          type: boolean
+        ownershipPercentage:
+          type: number
+          format: double
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+servers:
+  - url: https://api.mercoa.com
+    description: Production
