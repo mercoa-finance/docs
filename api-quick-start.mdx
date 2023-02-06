@@ -5,15 +5,15 @@ description: "Get started with the Mercoa API"
 
 # Backend Integration Guide
 
-This guide shows how you can use Mercoa with just the API and without any frontend components or SDKs. This is useful if you are integrating with a system that already has a frontend, or if you are building a custom frontend.
+This guide shows you how to use Mercoa with just the API and without any frontend components or SDKs. This is useful if you are integrating with a system that already has a frontend, or if you are building a custom frontend.
 
-However, we typically reccomend using the frontend SDKs or components, as they speed up development and provide a better user experience.
+Note: We typically recommend using the frontend SDKs/components, as they speed up development and provide a better user experience.
 
 ## Getting your API Keys
 
 You can find your API key and Organization ID in the [Mercoa Dashboard](https://mercoa.com/dashboard/developers).
 
-<b>Do NOT expose this key on the frontend</b>, it is for backend use only.
+<b>Do NOT expose this key on the front-end</b>, it is for back-end use only.
 
 ## Create an Entity
 
@@ -29,7 +29,7 @@ You can add representatives using the [API](/api-reference/representative/create
 
 ## Verify Entity
 
-Once all representatives have been added, you can verify the entity. This will trigger KYC/KYB checks and will usually be instant, but might take a few days if manual review is needed.
+Once all representatives have been added, you can verify the entity. This will trigger KYC/KYB checks on the entity and will usually be instant. In cases where manual review is needed, this might take a few days. 
 
 Use the [API](/api-reference/entity/update) or the Admin UI to verify the entity. When using the API, set the `ownersProvided` field to `true`.
 
@@ -66,7 +66,7 @@ Once the entity has accepted the Terms of Service, you can create an invoice for
   The vendor entity needs to be created, but only needs basic information like the legal name, email, and type of business. Vendor entities also do not need verified bank accounts.
 
 
-  An invoice can also be created without a `paymentDestinationId`, but we reccomend that you provide one. This will allow the invoice to be paid even if the vendor does not enter their information in the vendor portal.
+  An invoice can also be created without a `paymentDestinationId`, but we recommend that you provide one. This will allow the invoice to be paid even if the vendor does not enter their information in the vendor portal.
 </Note>
 
 If you have an PDF or image of the invoice, you can upload it using the `uploadedImage` field as a base64 encoded string. You can also extract information from the image or PDF using the [OCR endpoint](/api-reference/ocr).
