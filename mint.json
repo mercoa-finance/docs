@@ -47,6 +47,7 @@
       "group": "Entity",
       "pages": [
         "api-reference/entity/getAll",
+        "api-reference/entity/find",
         "api-reference/entity/get",
         "api-reference/entity/create",
         "api-reference/entity/update",

@@ -71,6 +71,31 @@ paths:
                   $ref: "#/components/schemas/EntityResponse"
       security: *ref_0
   /entity:
+    get:
+      operationId: entityService.find
+      tags:
+        - Entity
+      parameters:
+        - name: foreignId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/EntityStatus"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EntityResponse"
+      security: *ref_0
     post:
       operationId: entityService.create
       tags:
@@ -398,7 +423,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrganizationRespone"
+                $ref: "#/components/schemas/OrganizationResponse"
       security: *ref_0
     post:
       description: Update entity
@@ -412,7 +437,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrganizationRespone"
+                $ref: "#/components/schemas/OrganizationResponse"
       security: *ref_0
       requestBody:
         required: true
@@ -521,7 +546,7 @@ paths:
   /entity/{entityId}/paymentMethod/{paymentMethodId}/micro-deposits:
     post:
       description: Initiate micro deposits for a bank account
-      operationId: payment-methodService.initiate-micro-deposits
+      operationId: payment-methodService.initiateMicroDeposits
       tags:
         - PaymentMethod
       parameters:
@@ -993,6 +1018,12 @@ components:
           $ref: "#/components/schemas/EntityId"
         paymentDestinationId:
           $ref: "#/components/schemas/PaymentMethodId"
+        createVendor:
+          $ref: "#/components/schemas/CreateVendorRequest"
+          description: >-
+            When paying to a new vendor, use the createVendor object. Mercoa
+            will create the vendor entity and tie it to this invoice. This
+            object is ignored when updating an invoice.
         uploadedImage:
           type: string
       required:
@@ -1036,6 +1067,8 @@ components:
           $ref: "#/components/schemas/PaymentMethodResponse"
         paymentDestinationId:
           $ref: "#/components/schemas/PaymentMethodId"
+        paymentDestinationConfirmed:
+          type: boolean
         processedAt:
           type: string
           format: date-time
@@ -1050,6 +1083,7 @@ components:
         - status
         - amount
         - dueDate
+        - paymentDestinationConfirmed
         - createdAt
         - updatedAt
     InvoiceId:
@@ -1064,6 +1098,15 @@ components:
       required:
         - mimeType
         - uri
+    CreateVendorRequest:
+      type: object
+      properties:
+        vendor:
+          $ref: "#/components/schemas/EntityRequest"
+        paymentMethod:
+          $ref: "#/components/schemas/PaymentMethodRequest"
+      required:
+        - vendor
     InvoiceStatus:
       type: string
       enum:
@@ -1102,7 +1145,7 @@ components:
           type: string
       required:
         - name
-    OrganizationRespone:
+    OrganizationResponse:
       type: object
       properties:
         id:
