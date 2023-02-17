@@ -6,7 +6,7 @@ paths:
   /bankLookup:
     get:
       description: Find bank account details
-      operationId: bank-lookupService.find
+      operationId: bankLookup_find
       tags:
         - BankLookup
       parameters:
@@ -25,10 +25,27 @@ paths:
                 $ref: "#/components/schemas/BankLookupResponse"
       security: &ref_0
         - BearerAuth: []
+  /counterparties:
+    get:
+      description: Get all counterparties
+      operationId: counterparty_getAll
+      tags:
+        - Counterparty
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EntityResponse"
+      security: *ref_0
   /entity/{entityId}/counterparties:
     get:
       description: Find counterparties
-      operationId: counterpartyService.find
+      operationId: counterparty_find
       tags:
         - Counterparty
       parameters:
@@ -56,7 +73,7 @@ paths:
   /entities:
     get:
       description: Get all entities
-      operationId: entityService.getAll
+      operationId: entity_getAll
       tags:
         - Entity
       parameters: []
@@ -72,7 +89,7 @@ paths:
       security: *ref_0
   /entity:
     get:
-      operationId: entityService.find
+      operationId: entity_find
       tags:
         - Entity
       parameters:
@@ -97,7 +114,7 @@ paths:
                   $ref: "#/components/schemas/EntityResponse"
       security: *ref_0
     post:
-      operationId: entityService.create
+      operationId: entity_create
       tags:
         - Entity
       parameters: []
@@ -118,7 +135,7 @@ paths:
   /entity/{entityId}:
     get:
       description: Get entity
-      operationId: entityService.get
+      operationId: entity_get
       tags:
         - Entity
       parameters:
@@ -137,7 +154,7 @@ paths:
       security: *ref_0
     post:
       description: Update entity
-      operationId: entityService.update
+      operationId: entity_update
       tags:
         - Entity
       parameters:
@@ -162,7 +179,7 @@ paths:
               $ref: "#/components/schemas/EntityRequest"
     delete:
       description: Delete entity
-      operationId: entityService.delete
+      operationId: entity_delete
       tags:
         - Entity
       parameters:
@@ -178,7 +195,7 @@ paths:
   /entity/{entityId}/invoices:
     get:
       description: Get invoices for an entity
-      operationId: entityService.getInvoices
+      operationId: entity_getInvoices
       tags:
         - Entity
       parameters:
@@ -206,7 +223,7 @@ paths:
   /entity/{entityId}/accept-tos:
     post:
       description: End user accepts Terms of Service
-      operationId: entityService.acceptTermsOfService
+      operationId: entity_acceptTermsOfService
       tags:
         - Entity
       parameters:
@@ -226,7 +243,7 @@ paths:
   /entity/{entityId}/token:
     get:
       description: Get JWT token for entity
-      operationId: entityService.getToken
+      operationId: entity_getToken
       tags:
         - Entity
       parameters:
@@ -253,7 +270,7 @@ paths:
   /invoice:
     post:
       description: Create invoice
-      operationId: invoiceService.create
+      operationId: invoice_create
       tags:
         - Invoice
       parameters: []
@@ -274,7 +291,7 @@ paths:
   /invoice/{invoiceId}:
     get:
       description: Get invoice
-      operationId: invoiceService.get
+      operationId: invoice_get
       tags:
         - Invoice
       parameters:
@@ -293,7 +310,7 @@ paths:
       security: *ref_0
     post:
       description: Update invoice
-      operationId: invoiceService.update
+      operationId: invoice_update
       tags:
         - Invoice
       parameters:
@@ -320,7 +337,7 @@ paths:
       description: >-
         Delete invoice. Only invoices in the DRAFT and NEW status can be
         deleted.
-      operationId: invoiceService.delete
+      operationId: invoice_delete
       tags:
         - Invoice
       parameters:
@@ -336,7 +353,7 @@ paths:
   /invoice/{invoiceId}/documents:
     get:
       description: Get documents (scanned/uploaded images) associated with this invoice
-      operationId: invoiceService.getDocuments
+      operationId: invoice_getDocuments
       tags:
         - Invoice
       parameters:
@@ -358,7 +375,7 @@ paths:
   /invoice/{invoiceId}/vendorlink:
     get:
       description: Get temporary link for vendor to accept payment
-      operationId: invoiceService.getVendorLink
+      operationId: invoice_getVendorLink
       tags:
         - Invoice
       parameters:
@@ -384,7 +401,7 @@ paths:
   /ocr:
     post:
       description: Run OCR on an Base64 encoded image or PDF
-      operationId: ocrService.ocr
+      operationId: ocr_ocr
       tags:
         - Ocr
       parameters: []
@@ -394,7 +411,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OCRResponse"
+                $ref: "#/components/schemas/OcrResponse"
       security: *ref_0
       requestBody:
         required: true
@@ -412,11 +429,17 @@ paths:
                 - image
   /organization:
     get:
-      description: Get entity
-      operationId: organizationService.get
+      description: Get current organization information
+      operationId: organization_get
       tags:
         - Organization
-      parameters: []
+      parameters:
+        - name: whitelabelInfo
+          in: query
+          description: include customized white label data in response
+          required: false
+          schema:
+            type: boolean
       responses:
         "200":
           description: ""
@@ -426,8 +449,8 @@ paths:
                 $ref: "#/components/schemas/OrganizationResponse"
       security: *ref_0
     post:
-      description: Update entity
-      operationId: organizationService.update
+      description: Update current organization
+      operationId: organization_update
       tags:
         - Organization
       parameters: []
@@ -447,7 +470,7 @@ paths:
               $ref: "#/components/schemas/OrganizationRequest"
   /entity/{entityId}/paymentMethods:
     get:
-      operationId: payment-methodService.getAll
+      operationId: paymentMethod_getAll
       tags:
         - PaymentMethod
       parameters:
@@ -475,7 +498,7 @@ paths:
   /entity/{entityId}/paymentMethod:
     post:
       description: Create payment method
-      operationId: payment-methodService.create
+      operationId: paymentMethod_create
       tags:
         - PaymentMethod
       parameters:
@@ -501,7 +524,7 @@ paths:
   /entity/{entityId}/paymentMethod/{paymentMethodId}:
     get:
       description: Get payment method
-      operationId: payment-methodService.get
+      operationId: paymentMethod_get
       tags:
         - PaymentMethod
       parameters:
@@ -525,7 +548,7 @@ paths:
       security: *ref_0
     delete:
       description: Delete payment method
-      operationId: payment-methodService.delete
+      operationId: paymentMethod_delete
       tags:
         - PaymentMethod
       parameters:
@@ -546,7 +569,7 @@ paths:
   /entity/{entityId}/paymentMethod/{paymentMethodId}/micro-deposits:
     post:
       description: Initiate micro deposits for a bank account
-      operationId: payment-methodService.initiateMicroDeposits
+      operationId: paymentMethod_initiateMicroDeposits
       tags:
         - PaymentMethod
       parameters:
@@ -566,7 +589,7 @@ paths:
       security: *ref_0
     put:
       description: Complete micro deposit verification
-      operationId: payment-methodService.completeMicroDeposits
+      operationId: paymentMethod_completeMicroDeposits
       tags:
         - PaymentMethod
       parameters:
@@ -600,7 +623,7 @@ paths:
   /entity/{entityId}/representatives:
     get:
       description: Get representatives for an entity
-      operationId: representativeService.getAll
+      operationId: representative_getAll
       tags:
         - Representative
       parameters:
@@ -622,7 +645,7 @@ paths:
   /entity/{entityId}/representative:
     post:
       description: Create representative
-      operationId: representativeService.create
+      operationId: representative_create
       tags:
         - Representative
       parameters:
@@ -648,7 +671,7 @@ paths:
   /entity/{entityId}/representative/{representativeId}:
     get:
       description: Get representative
-      operationId: representativeService.get
+      operationId: representative_get
       tags:
         - Representative
       parameters:
@@ -672,7 +695,7 @@ paths:
       security: *ref_0
     delete:
       description: Delete representative
-      operationId: representativeService.delete
+      operationId: representative_delete
       tags:
         - Representative
       parameters:
@@ -692,13 +715,35 @@ paths:
       security: *ref_0
 components:
   schemas:
+    BankAddress:
+      type: object
+      properties:
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        postalCodeExtension:
+          type: string
+      required:
+        - address
+        - city
+        - state
+        - postalCode
+        - postalCodeExtension
     BankLookupResponse:
       type: object
       properties:
         bankName:
           type: string
+        bankAddress:
+          $ref: "#/components/schemas/BankAddress"
       required:
         - bankName
+        - bankAddress
     FullName:
       type: object
       properties:
@@ -752,14 +797,14 @@ components:
       required:
         - countryCode
         - number
-    IndividualGovernmentID:
+    IndividualGovernmentId:
       type: object
       properties:
         ssn:
-          $ref: "#/components/schemas/SSN"
+          $ref: "#/components/schemas/Ssn"
         itin:
-          $ref: "#/components/schemas/ITIN"
-    SSN:
+          $ref: "#/components/schemas/Itin"
+    Ssn:
       type: object
       properties:
         full:
@@ -768,7 +813,7 @@ components:
           type: string
       required:
         - lastFour
-    ITIN:
+    Itin:
       type: object
       properties:
         full:
@@ -878,7 +923,7 @@ components:
         ownersProvided:
           type: boolean
         taxId:
-          $ref: "#/components/schemas/TaxID"
+          $ref: "#/components/schemas/TaxId"
       required:
         - email
         - legalBusinessName
@@ -926,7 +971,7 @@ components:
         birthDate:
           $ref: "#/components/schemas/BirthDate"
         governmentID:
-          $ref: "#/components/schemas/IndividualGovernmentID"
+          $ref: "#/components/schemas/IndividualGovernmentId"
       required:
         - email
         - name
@@ -950,7 +995,7 @@ components:
         - name
         - birthDateProvided
         - governmentIDProvided
-    TaxID:
+    TaxId:
       type: object
       properties:
         ein:
@@ -1003,6 +1048,9 @@ components:
         deductionDate:
           type: string
           format: date-time
+        fundedDate:
+          type: string
+          format: date-time
         dueDate:
           type: string
           format: date-time
@@ -1026,9 +1074,6 @@ components:
             object is ignored when updating an invoice.
         uploadedImage:
           type: string
-      required:
-        - amount
-        - dueDate
     InvoiceResponse:
       type: object
       properties:
@@ -1042,6 +1087,9 @@ components:
         currency:
           type: string
         deductionDate:
+          type: string
+          format: date-time
+        fundedDate:
           type: string
           format: date-time
         dueDate:
@@ -1069,6 +1117,10 @@ components:
           $ref: "#/components/schemas/PaymentMethodId"
         paymentDestinationConfirmed:
           type: boolean
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/TransactionResponse"
         processedAt:
           type: string
           format: date-time
@@ -1081,13 +1133,35 @@ components:
       required:
         - id
         - status
-        - amount
-        - dueDate
         - paymentDestinationConfirmed
         - createdAt
         - updatedAt
     InvoiceId:
       type: string
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          $ref: "#/components/schemas/TransactionStatus"
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - status
+        - amount
+        - createdAt
+        - updatedAt
     DocumentResponse:
       type: object
       properties:
@@ -1107,17 +1181,28 @@ components:
           $ref: "#/components/schemas/PaymentMethodRequest"
       required:
         - vendor
+    TransactionStatus:
+      type: string
+      enum:
+        - created
+        - pending
+        - completed
+        - failed
+        - reversed
+        - queued
+        - canceled
     InvoiceStatus:
       type: string
       enum:
         - DRAFT
         - NEW
+        - PENDING
         - PAID
         - CANCELED
         - REFUSED
         - APPROVED
         - ARCHIVED
-    OCRResponse:
+    OcrResponse:
       type: object
       properties:
         invoice:
@@ -1143,6 +1228,8 @@ components:
           type: string
         supportEmail:
           type: string
+        whiteLabelInfo:
+          $ref: "#/components/schemas/WhiteLabelRequest"
       required:
         - name
     OrganizationResponse:
@@ -1160,10 +1247,92 @@ components:
           type: string
         supportEmail:
           type: string
+        whiteLabelInfo:
+          $ref: "#/components/schemas/WhiteLabelResponse"
       required:
         - id
         - sandbox
         - name
+    PaymentRailMarkupType:
+      type: string
+      enum:
+        - flat
+        - percent
+    PaymentRailMarkup:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/PaymentRailMarkupType"
+        amount:
+          type: number
+          format: double
+      required:
+        - type
+        - amount
+    PaymentRailRequest:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/PaymentMethodType"
+        name:
+          type: string
+        markup:
+          $ref: "#/components/schemas/PaymentRailMarkup"
+        description:
+          type: string
+        active:
+          type: boolean
+      required:
+        - type
+        - name
+        - active
+    PaymentRailResponse:
+      type: object
+      properties:
+        avaliable:
+          type: boolean
+      required:
+        - avaliable
+      allOf:
+        - $ref: "#/components/schemas/PaymentRailRequest"
+    WhiteLabelRequest:
+      type: object
+      properties:
+        payerPayments:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentRailRequest"
+        backupDisbursements:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentRailRequest"
+        vendorDisbursements:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentRailRequest"
+      required:
+        - payerPayments
+        - backupDisbursements
+        - vendorDisbursements
+    WhiteLabelResponse:
+      type: object
+      properties:
+        payerPayments:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentRailResponse"
+        backupDisbursements:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentRailResponse"
+        vendorDisbursements:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentRailResponse"
+      required:
+        - payerPayments
+        - backupDisbursements
+        - vendorDisbursements
     PaymentMethodId:
       type: string
     PaymentMethodRequest:
@@ -1315,6 +1484,10 @@ components:
       enum:
         - check
         - bankAccount
+        - na
+        - card
+        - bnpl
+        - virtualCard
     BankType:
       type: string
       enum:
@@ -1345,7 +1518,7 @@ components:
         birthDate:
           $ref: "#/components/schemas/BirthDate"
         governmentID:
-          $ref: "#/components/schemas/IndividualGovernmentID"
+          $ref: "#/components/schemas/IndividualGovernmentId"
         responsibilities:
           $ref: "#/components/schemas/Responsibilities"
       required:

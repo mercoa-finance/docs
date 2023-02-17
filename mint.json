@@ -53,6 +53,7 @@
         "api-reference/entity/update",
         "api-reference/entity/delete",
         "api-reference/entity/invoices",
+        "api-reference/entity/findCounterparty",
         {
           "group": "Payment Methods",
           "pages": [
@@ -98,6 +99,19 @@
         "api-reference/invoice/delete",
         "api-reference/invoice/documents",
         "api-reference/invoice/vendorLink"
+      ]
+    },
+    {
+      "group": "Counterparty",
+      "pages": [
+        "api-reference/counterparty/getAll"
+      ]
+    },
+    {
+      "group": "Organization",
+      "pages": [
+        "api-reference/organization/get",
+        "api-reference/organization/update"
       ]
     },
     {
