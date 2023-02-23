@@ -176,7 +176,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EntityRequest"
+              $ref: "#/components/schemas/EntityUpdateRequest"
     delete:
       description: Delete entity
       operationId: entity_delete
@@ -849,6 +849,17 @@ components:
       required:
         - accountType
         - profile
+    EntityUpdateRequest:
+      type: object
+      properties:
+        foreignId:
+          type: string
+        ownedByOrg:
+          type: boolean
+        accountType:
+          $ref: "#/components/schemas/AccountType"
+        profile:
+          $ref: "#/components/schemas/ProfileRequest"
     EntityResponse:
       type: object
       properties:
