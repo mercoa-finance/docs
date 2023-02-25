@@ -434,9 +434,15 @@ paths:
       tags:
         - Organization
       parameters:
-        - name: whitelabelInfo
+        - name: paymentMethods
           in: query
-          description: include customized white label data in response
+          description: include supported payment methods in response
+          required: false
+          schema:
+            type: boolean
+        - name: emailProvider
+          in: query
+          description: include email provider info in response
           required: false
           schema:
             type: boolean
@@ -1239,10 +1245,10 @@ components:
           type: string
         supportEmail:
           type: string
-        whiteLabelInfo:
-          $ref: "#/components/schemas/WhiteLabelRequest"
-      required:
-        - name
+        paymentMethods:
+          $ref: "#/components/schemas/PaymentMethodsRequest"
+        emailProvider:
+          $ref: "#/components/schemas/EmailProviderRequest"
     OrganizationResponse:
       type: object
       properties:
@@ -1258,8 +1264,10 @@ components:
           type: string
         supportEmail:
           type: string
-        whiteLabelInfo:
-          $ref: "#/components/schemas/WhiteLabelResponse"
+        paymentMethods:
+          $ref: "#/components/schemas/PaymentMethodsResponse"
+        emailProvider:
+          $ref: "#/components/schemas/EmailProviderResponse"
       required:
         - id
         - sandbox
@@ -1306,7 +1314,7 @@ components:
         - avaliable
       allOf:
         - $ref: "#/components/schemas/PaymentRailRequest"
-    WhiteLabelRequest:
+    PaymentMethodsRequest:
       type: object
       properties:
         payerPayments:
@@ -1325,7 +1333,7 @@ components:
         - payerPayments
         - backupDisbursements
         - vendorDisbursements
-    WhiteLabelResponse:
+    PaymentMethodsResponse:
       type: object
       properties:
         payerPayments:
@@ -1344,6 +1352,58 @@ components:
         - payerPayments
         - backupDisbursements
         - vendorDisbursements
+    EmailProviderRequest:
+      type: object
+      properties:
+        sender:
+          $ref: "#/components/schemas/EmailSenderRequest"
+      required:
+        - sender
+    EmailProviderResponse:
+      type: object
+      properties:
+        sender:
+          $ref: "#/components/schemas/EmailSenderResponse"
+      required:
+        - sender
+    EmailSenderProvider:
+      type: string
+      enum:
+        - none
+        - sendgrid
+        - resend
+    EmailSenderRequest:
+      type: object
+      properties:
+        provider:
+          $ref: "#/components/schemas/EmailSenderProvider"
+        fromEmail:
+          type: string
+        fromName:
+          type: string
+        apiKey:
+          type: string
+      required:
+        - provider
+        - fromEmail
+        - fromName
+        - apiKey
+    EmailSenderResponse:
+      type: object
+      properties:
+        provider:
+          $ref: "#/components/schemas/EmailSenderProvider"
+        fromEmail:
+          type: string
+        fromName:
+          type: string
+        hasApiKey:
+          type: boolean
+      required:
+        - provider
+        - fromEmail
+        - fromName
+        - hasApiKey
     PaymentMethodId:
       type: string
     PaymentMethodRequest:
