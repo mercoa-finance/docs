@@ -1,14 +1,33 @@
 ---
 title: Entities
-description: Learn what information we require to verify your customrs to use Mercoa
+description: Create and verify your customers
 ---
+## [API Reference](/api-reference/entity/create)
 
-## Know Your Customer
+#
+
+Before your customers can start using Mercoa, they need to be added as an `Entity`. Entities are the individuals and businesses that use Mercoa to pay and get paid. 
+
+For every invoice that needs to be paid, there are at least two entities involved: 
+- `payer` 
+- `vendor`
+
+## Creating an Entity
+
+You can create an entity on the Mercoa [Admin UI](https://mercoa.com/dashboard/entities) or via [API](/api-reference/entity/create).
+
+You will need to create an entity for each of your customers that will use Mercoa, and verify them before they can start paying bills. 
+
+- If you are using the Mercoa iframe, vendor entities will be created automatically.
+- If you are using the API, you will need to create the vendor entities as well. Vendor entities **do not** need to be verified before they can receive payments.
+
+
+## Know Your Customer Verification
 Banking regulations require that financial institutions perform a “Know Your Customer” (KYC) process to verify an individual or business identity before enabling certain capabilities. 
 All Mercoa accounts are also checked against OFAC and sanctions lists to ensure they are not forbidden from conducting business in the United States.
 
 
-## Requirements
+### Requirements
 | Individual              | Business                |
 |-------------------------|-------------------------|
 | Legal name              | Legal name              |
@@ -22,4 +41,4 @@ All Mercoa accounts are also checked against OFAC and sanctions lists to ensure 
 
 <Note> Note that in some instances, we will require the full SSN.</Note>
 
-Separate from KYC, Mercoa entities must verify business representatives before a business account can be verified. [Learn more here](/business-representatives)
+Separate from KYC, Mercoa business entities must verify business representatives before a business account can be verified. [Learn more here](/business-representatives)

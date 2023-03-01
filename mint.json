@@ -31,10 +31,18 @@
     {
       "group": "Home",
       "pages": [
+        "introduction",
         "ui-quick-start",
-        "api-quick-start",
+        "api-quick-start"
+      ]
+    },
+    {
+      "group": "Concepts",
+      "pages": [
+        "invoices",
         "entities",
-        "business-representatives"
+        "business-representatives",
+        "payment-methods"
       ]
     },
     {

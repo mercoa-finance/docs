@@ -1,0 +1,58 @@
+---
+title: Invoices
+description: Learn about the data and statuses that an invoice goes through in Mercoa.
+---
+
+## [API Reference](/api-reference/invoice/create)
+
+#
+
+# Lifecycle of an invoice
+
+An invoice represents an obligation owed by a business to pay off a short-term debt to its vendors for products or services that were purchased.
+
+An invoice goes through many steps before it is paid off.
+
+The invoice lifecycle is as follows:
+
+# 1. Draft
+
+If an invoice is created but doesn't have all the required fields set, it will be in the `DRAFT` state. An invoice cannot be sent to the vendor in this state. Invoices created by forwarding an email will be in this state until approved by the user as well.
+
+# 2. New
+
+When an invoice is created and all the required fields are set, it will be in the `NEW` state. 
+
+In this state, the invoice will have the following:
+
+### Payer
+
+The `payer` is the [Entity](/entities) that is paying the invoice.
+
+To fund an invoice, the `paymenMethodSource` needs to be set. This should be a `paymentMethod` owned by the `payer` that is verified. 
+
+### Vendor
+
+The vendor is the [Entity](/entities) that is receiving the payment for the invoice. 
+
+Before a payment can be disbursed to a vendor, the `paymentMethodDestination` needs to be set. 
+
+If the `paymentMethodDestination` is not set, the vendor will need to add their payment details before the invoice can be paid. Mercoa will email the vendor with a link where the vendor can create a `paymentMethodDestination` and accept the payment. 
+
+If the vendor does not add their payment details, a backup `paymentMethodDestination` can be set on the invoice.
+
+### Amount
+
+The `amount` is the total amount of the invoice. This is the amount that will be paid to the vendor.
+
+### Due Date and Deduction Date
+
+The `dueDate` is the date that the invoice is due. The `deductionDate` is the date that the invoice amount will be deducted from the payer's account.
+
+# 3. Pending
+
+On the `deductionDate`, the payment will be triggered and the invoice will be in the `PENDING` state. This means that the invoice amount will be deducted from the payer's account and sent to the vendor.
+
+# 4. Paid
+
+When the invoice amount is received by the vendor, the invoice will be in the `PAID` state.
