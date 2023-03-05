@@ -207,7 +207,7 @@ paths:
         - name: status
           in: query
           description: Invoice status to filter on
-          required: true
+          required: false
           schema:
             $ref: "#/components/schemas/InvoiceStatus"
       responses:
@@ -398,6 +398,22 @@ paths:
                 Example1:
                   value: https://mercoa.com/vendors/accept-payment/?t=123456
       security: *ref_0
+  /invoice/{invoiceId}/sendVendorEmail:
+    post:
+      description: Trigger email to vendor inviting them into the vendor portal
+      operationId: invoice_sendVendorEmail
+      tags:
+        - Invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/InvoiceId"
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
   /ocr:
     post:
       description: Run OCR on an Base64 encoded image or PDF
@@ -474,6 +490,62 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/OrganizationRequest"
+  /paymentMethod/schema:
+    post:
+      description: Create custom payment method schema
+      operationId: paymentMethodSchema_create
+      tags:
+        - PaymentMethodSchema
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentMethodSchemaResponse"
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentMethodSchemaRequest"
+  /paymentMethod/schema/{schemaId}:
+    get:
+      description: Get custom payment method schema
+      operationId: paymentMethodSchema_get
+      tags:
+        - PaymentMethodSchema
+      parameters:
+        - name: schemaId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/PaymentMethodSchemaId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentMethodSchemaResponse"
+      security: *ref_0
+    delete:
+      description: Delete custom payment method schema
+      operationId: paymentMethodSchema_delete
+      tags:
+        - PaymentMethodSchema
+      parameters:
+        - name: schemaId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/PaymentMethodSchemaId"
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
   /entity/{entityId}/paymentMethods:
     get:
       operationId: paymentMethod_getAll
@@ -1404,6 +1476,87 @@ components:
         - fromEmail
         - fromName
         - hasApiKey
+    PaymentMethodSchemaId:
+      type: string
+    PaymentMethodSchemaRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        isSource:
+          type: boolean
+          description: This payment method can be used as a payment source for an invoice
+        isDestination:
+          type: boolean
+          description: >-
+            This payment method can be used as a payment destination for an
+            invoice
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentMethodSchemaField"
+      required:
+        - name
+        - isSource
+        - isDestination
+        - fields
+    PaymentMethodSchemaResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/PaymentMethodSchemaId"
+        name:
+          type: string
+        isSource:
+          type: boolean
+          description: This payment method can be used as a payment source for an invoice
+        isDestination:
+          type: boolean
+          description: >-
+            This payment method can be used as a payment destination for an
+            invoice
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentMethodSchemaField"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - isSource
+        - isDestination
+        - fields
+        - createdAt
+        - updatedAt
+    PaymentMethodSchemaFieldType:
+      type: string
+      enum:
+        - text
+        - number
+        - select
+    PaymentMethodSchemaField:
+      type: object
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        type:
+          $ref: "#/components/schemas/PaymentMethodSchemaFieldType"
+        optional:
+          type: boolean
+        options:
+          type: string
+          description: When type is 'select', provide options that can be selected
+      required:
+        - name
+        - type
+        - optional
     PaymentMethodId:
       type: string
     PaymentMethodRequest:
@@ -1415,6 +1568,10 @@ components:
           $ref: "#/components/schemas/BankAccountRequest"
         check:
           $ref: "#/components/schemas/CheckRequest"
+        card:
+          $ref: "#/components/schemas/CardRequest"
+        custom:
+          $ref: "#/components/schemas/CustomPaymentMethodRequest"
       required:
         - type
     PaymentMethodResponse:
@@ -1428,6 +1585,10 @@ components:
           $ref: "#/components/schemas/BankAccountResponse"
         check:
           $ref: "#/components/schemas/CheckResponse"
+        card:
+          $ref: "#/components/schemas/CardResponse"
+        custom:
+          $ref: "#/components/schemas/CustomPaymentMethodResponse"
         createdAt:
           type: string
           format: date-time
@@ -1445,7 +1606,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          $ref: "#/components/schemas/BankAccountId"
         bankName:
           type: string
         routingNumber:
@@ -1487,6 +1648,62 @@ components:
         - accountNumber
         - accountType
         - status
+        - createdAt
+        - updatedAt
+    CardId:
+      type: string
+    CardRequest:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/CardId"
+        type:
+          $ref: "#/components/schemas/CardType"
+        brand:
+          $ref: "#/components/schemas/CardBrand"
+        lastFour:
+          type: string
+        expMonth:
+          type: string
+        expYear:
+          type: string
+        token:
+          type: string
+      required:
+        - type
+        - brand
+        - lastFour
+        - expMonth
+        - expYear
+        - token
+    CardResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/CardId"
+        type:
+          $ref: "#/components/schemas/CardType"
+        brand:
+          $ref: "#/components/schemas/CardBrand"
+        lastFour:
+          type: string
+        expMonth:
+          type: string
+        expYear:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - type
+        - brand
+        - lastFour
+        - expMonth
+        - expYear
         - createdAt
         - updatedAt
     CheckId:
@@ -1550,9 +1767,78 @@ components:
         - country
         - createdAt
         - updatedAt
+    CustomId:
+      type: string
+    CustomPaymentMethodRequest:
+      type: object
+      properties:
+        foreignId:
+          type: string
+          description: ID for this payment method in your system
+        accountName:
+          type: string
+        accountNumber:
+          type: string
+        schemaId:
+          $ref: "#/components/schemas/PaymentMethodSchemaId"
+          description: >-
+            Payment method schema used for this payment method. Defines the
+            fields that this payment method contains.
+        data:
+          type: object
+          additionalProperties:
+            type: string
+          description: >-
+            Object of key/value pairs that matches the keys in the linked
+            payment method schema.
+      required:
+        - foreignId
+        - schemaId
+        - data
+    CustomPaymentMethodResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/CustomId"
+        foreignId:
+          type: string
+          description: ID for this payment method in your system
+        accountName:
+          type: string
+        accountNumber:
+          type: string
+        schemaId:
+          $ref: "#/components/schemas/PaymentMethodSchemaId"
+          description: >-
+            Payment method schema used for this payment method. Defines the
+            fields that this payment method contains.
+        schema:
+          $ref: "#/components/schemas/PaymentMethodSchemaResponse"
+        data:
+          type: object
+          additionalProperties:
+            type: string
+          description: >-
+            Object of key/value pairs that matches the keys in the linked
+            payment method schema.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - foreignId
+        - schemaId
+        - schema
+        - data
+        - createdAt
+        - updatedAt
     PaymentMethodType:
       type: string
       enum:
+        - custom
         - check
         - bankAccount
         - na
@@ -1573,6 +1859,20 @@ components:
         - VERIFICATION_FAILED
         - PENDING
         - ERRORED
+    CardType:
+      type: string
+      enum:
+        - credit
+        - debit
+        - prepaid
+        - unknown
+    CardBrand:
+      type: string
+      enum:
+        - AmericanExpress
+        - Discover
+        - Mastercard
+        - Visa
     RepresentativeId:
       type: string
     RepresentativeRequest:

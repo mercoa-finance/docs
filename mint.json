@@ -33,7 +33,8 @@
       "pages": [
         "introduction",
         "ui-quick-start",
-        "api-quick-start"
+        "api-quick-start",
+        "custom-payment-rails"
       ]
     },
     {
@@ -42,7 +43,8 @@
         "invoices",
         "entities",
         "business-representatives",
-        "payment-methods"
+        "payment-methods",
+        "webhooks"
       ]
     },
     {
@@ -69,6 +71,14 @@
             "api-reference/payment-method/get",
             "api-reference/payment-method/create",
             "api-reference/payment-method/delete",
+            {
+              "group": "Custom Schemas",
+              "pages": [
+                "api-reference/payment-method/custom-schema/get",
+                "api-reference/payment-method/custom-schema/create",
+                "api-reference/payment-method/custom-schema/delete"
+              ]
+            },
             {
               "group": "Bank Account",
               "pages": [
