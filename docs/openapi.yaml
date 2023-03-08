@@ -443,6 +443,29 @@ paths:
               required:
                 - mimeType
                 - image
+  /emailOcr:
+    post:
+      operationId: ocr_emailInbox
+      tags:
+        - Ocr
+      parameters: []
+      responses:
+        "204":
+          description: ""
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/EmailOcrRequest"
+              required:
+                - items
   /organization:
     get:
       description: Get current organization information
@@ -918,6 +941,9 @@ components:
       properties:
         foreignId:
           type: string
+        emailTo:
+          type: string
+          description: Email inbox address. Do not inclue the @domain.com
         ownedByOrg:
           type: boolean
         accountType:
@@ -932,6 +958,9 @@ components:
       properties:
         foreignId:
           type: string
+        emailTo:
+          type: string
+          description: Email inbox address. Do not inclue the @domain.com
         ownedByOrg:
           type: boolean
         accountType:
@@ -944,6 +973,8 @@ components:
         id:
           $ref: "#/components/schemas/EntityId"
         foreignId:
+          type: string
+        emailTo:
           type: string
         ownedByOrg:
           type: boolean
@@ -1258,9 +1289,12 @@ components:
           type: string
         uri:
           type: string
+        ocrResults:
+          description: Raw output from OCR
       required:
         - mimeType
         - uri
+        - ocrResults
     CreateVendorRequest:
       type: object
       properties:
@@ -1304,6 +1338,88 @@ components:
         - invoice
         - vendor
         - check
+    OcrMailbox:
+      type: object
+      properties:
+        Address:
+          type: string
+        Name:
+          type: string
+      required:
+        - Address
+    Attachments:
+      type: object
+      properties:
+        Name:
+          type: string
+        ContentType:
+          type: string
+        ContentLength:
+          type: integer
+        ContentID:
+          type: string
+        DownloadToken:
+          type: string
+      required:
+        - Name
+        - ContentType
+        - ContentLength
+        - ContentID
+        - DownloadToken
+    EmailOcrRequest:
+      type: object
+      properties:
+        Uuid:
+          type: array
+          items:
+            type: string
+        MessageId:
+          type: string
+        InReplyTo:
+          type: string
+        From:
+          $ref: "#/components/schemas/OcrMailbox"
+        To:
+          type: array
+          items:
+            $ref: "#/components/schemas/OcrMailbox"
+        Cc:
+          type: array
+          items:
+            $ref: "#/components/schemas/OcrMailbox"
+        ReplyTo:
+          $ref: "#/components/schemas/OcrMailbox"
+        SentAtDate:
+          type: string
+        Subject:
+          type: string
+        Attachments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Attachments"
+        Headers: {}
+        SpamScore:
+          type: number
+          format: double
+        ExtractedMarkdownMessage:
+          type: string
+        ExtractedMarkdownSignature:
+          type: string
+        RawHtmlBody:
+          type: string
+        RawTextBody:
+          type: string
+      required:
+        - Uuid
+        - MessageId
+        - From
+        - To
+        - Cc
+        - SentAtDate
+        - Subject
+        - Attachments
+        - Headers
+        - SpamScore
     OrganizationId:
       type: string
     OrganizationRequest:
@@ -1429,15 +1545,21 @@ components:
       properties:
         sender:
           $ref: "#/components/schemas/EmailSenderRequest"
+        inboxDomain:
+          type: string
       required:
         - sender
+        - inboxDomain
     EmailProviderResponse:
       type: object
       properties:
         sender:
           $ref: "#/components/schemas/EmailSenderResponse"
+        inboxDomain:
+          type: string
       required:
         - sender
+        - inboxDomain
     EmailSenderProvider:
       type: string
       enum:
@@ -1459,7 +1581,6 @@ components:
         - provider
         - fromEmail
         - fromName
-        - apiKey
     EmailSenderResponse:
       type: object
       properties:
