@@ -6,6 +6,10 @@ description: Use Mercoa to provide an invoice email inbox for your users.
 Mercoa's email inbox allows you to provide an email address for your users to send invoices to. Any email sent to the customer's inbox with an attached invoice PDF or image will be automatically processed.
 Your users can then view, approve, and pay the invoice from the Mercoa dashboard. You can also use the [Mercoa API](/api-reference/invoice/get) to access the invoices directly.
 
+<Note>
+  Emails sent to the Mercoa inbox need to have at least one PDF or image attachment. Each attachment will be processed as a separate invoice.
+</Note>
+
 ## Setup
 
 To set up an email inbox, you will need to add a domain to your Mercoa account. We recommend using `ap.yourcompany.com` as the domain name, where `yourcompany.com` is your company's domain name.
